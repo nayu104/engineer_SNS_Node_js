@@ -91,4 +91,5 @@ app.get('/callback/github', async (req, res) => {
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`サーバーが起動しました → http://localhost:${PORT}`);
+  console.log(`サーバーが起動しませんでした → http://localhost:${PORT}`);
 });
