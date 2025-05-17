@@ -22,7 +22,7 @@ const pool = new Pool({ connectionString: DB_URL });
 
 app.get('/login/github', (req, res) => {
   const { platform } = req.query;
-  const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=http://localhost:5000/callback/github?platform=${platform}`;
+ const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://engineer-sns-436152672971.europe-west1.run.app/callback/github?platform=${platform}`;
   res.redirect(redirectUrl); // GitHubのログイン画面にリダイレクト
 });
 
@@ -90,6 +90,6 @@ app.get('/callback/github', async (req, res) => {
 // サーバー起動
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`サーバーが起動しました → http://localhost:${PORT}`);
-  console.log(`サーバーが起動しませんでした → http://localhost:${PORT}`);
+  console.log(`サーバーが起動しました → ${PORT}`);
+  console.log(`サーバーが起動しませんでした → ${PORT}`);
 });
