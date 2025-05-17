@@ -16,5 +16,9 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+
 images:
   - 'gcr.io/$PROJECT_ID/engineer-sns'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
