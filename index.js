@@ -89,7 +89,7 @@ app.get('/callback/github', async (req, res) => {
 
 // サーバー起動
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log(`サーバーが起動しました → ${PORT}`);
   console.log(`サーバーが起動しませんでした → ${PORT}`);
 });
