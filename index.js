@@ -24,6 +24,61 @@ app.get('/', (req, res) => {
  res.send('Node起動した');
 });
 
+app.get('/followers', async (req, res) => {
+  // Authorizationヘッダーからトークンを安全に取得
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).send('アクセストークンがありません');
+
+  try {
+    // GitHub API へフォロワー取得リクエストを送信
+    const response = await axios.get('https://api.github.com/user/followers', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'User-Agent': 'engineer-sns-app'//GitHub APIは User-Agent ヘッダーを必須としている
+      }
+    });
+
+    users = response.data;
+
+    // フォロワー情報を返す
+    res.json({
+      count: users.length, // フォロワー数
+      users: users
+    });
+  } catch (error) {
+    // エラー発生時
+    console.error('GitHub API エラー:', error);
+    res.status(500).json({ error: 'GitHub API呼び出し失敗' });
+  }
+});
+
+app.get('/following', async (req, res) => {
+  // Authorizationヘッダーからトークンを安全に取得
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).send('アクセストークンがありません');
+
+  try {
+    // GitHub API へフォロワー取得リクエストを送信
+    const response = await axios.get('https://api.github.com/user/following', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'User-Agent': 'engineer-sns-app'
+      }
+    });
+     users = response.data;
+    // フォローを返す
+    res.json({
+      count: users.length, // フォロー数
+      users: users
+    });
+  } catch (error) {
+    // エラー発生時
+    console.error('GitHub API エラー:', error);
+    res.status(500).json({ error: 'GitHub API呼び出し失敗' });
+  }
+});
+
+
 
 app.get('/login/github', (req, res) => {
   const { platform } = req.query;
@@ -76,6 +131,7 @@ app.get('/callback/github', async (req, res) => {
       id: user.id,
       name: user.login,
       avatar: user.avatar_url,
+      token: access_token,
     }).toString();//なくても動く
 
     // React or Flutter どちらに返すかを分岐
