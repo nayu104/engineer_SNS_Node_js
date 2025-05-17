@@ -20,6 +20,11 @@ const FLUTTER_REDIRECT = process.env.FLUTTER_REDIRECT;
 // PostgreSQL接続プールを作成
 const pool = new Pool({ connectionString: DB_URL });
 
+app.get('/', (req, res) => {
+ res.send('Node.jsをデプロイしました！！！！！！！！！！！！！！！！！！！！');
+});
+
+
 app.get('/login/github', (req, res) => {
   const { platform } = req.query;
  const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://engineer-sns-436152672971.europe-west1.run.app/callback/github?platform=${platform}`;
