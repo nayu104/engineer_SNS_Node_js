@@ -21,7 +21,7 @@ const FLUTTER_REDIRECT = process.env.FLUTTER_REDIRECT;
 const pool = new Pool({ connectionString: DB_URL });
 
 app.get('/', (req, res) => {
- res.send('Node.jgvjgfsfgfdgsdfgsdgsdfdssasasfsdhngafs');
+ res.send('Node起動した');
 });
 
 
