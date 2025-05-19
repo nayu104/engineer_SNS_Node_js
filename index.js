@@ -24,6 +24,19 @@ app.get('/', (req, res) => {
  res.send('Node起動した');
 });
 
+app.get('/login/github', (req, res) => {
+  const { platform } = req.query;
+
+  const redirectUrl = `https://github.com/login/oauth/authorize` +
+    `?client_id=${CLIENT_ID}` +
+    `&redirect_uri=https://engineer-sns-436152672971.europe-west1.run.app/callback/github?platform=${platform}` +
+    `&scope=read:user,user:follow`;
+
+  res.redirect(redirectUrl);
+});
+
+
+
 app.get('/followers', async (req, res) => {
   // Authorizationヘッダーからトークンを安全に取得
   const token = req.headers.authorization?.split(' ')[1];
@@ -76,14 +89,6 @@ app.get('/following', async (req, res) => {
     console.error('GitHub API エラー:', error);
     res.status(500).json({ error: 'GitHub API呼び出し失敗' });
   }
-});
-
-
-
-app.get('/login/github', (req, res) => {
-  const { platform } = req.query;
- const redirectUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=https://engineer-sns-436152672971.europe-west1.run.app/callback/github?platform=${platform}`;
-  res.redirect(redirectUrl); // GitHubのログイン画面にリダイレクト
 });
 
 
