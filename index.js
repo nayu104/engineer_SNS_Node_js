@@ -14,7 +14,7 @@ app.use(express.json());                // JSONボディを自動で解析でき
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const DB_URL = process.env.DB_URL;
-const REACT_REDIRECT = process.env.REACT_REDIRECT;//http://localhost:3000/callbackというようにフロントのポートを指定する
+const WEB_TEST = process.env.REACT_REDIRECT;//http://localhost:3000/callbackというようにフロントのポートを指定する
 const FLUTTER_REDIRECT = process.env.FLUTTER_REDIRECT;
 
 // PostgreSQL接続プールを作成
@@ -41,7 +41,7 @@ app.get('/followers', async (req, res) => {
     users = response.data;
 
     // フォロワー情報を返す
-    res.json({
+    res.status(200).json({
       count: users.length, // フォロワー数
       users: users
     });
@@ -67,7 +67,7 @@ app.get('/following', async (req, res) => {
     });
      users = response.data;
     // フォローを返す
-    res.json({
+    res.status(200).json({
       count: users.length, // フォロー数
       users: users
     });
@@ -137,7 +137,7 @@ app.get('/callback/github', async (req, res) => {
     // React or Flutter どちらに返すかを分岐
     const redirectTo = platform === 'flutter'
       ? `${FLUTTER_REDIRECT}?${query}`//フロントのポートを入れてるのでフロントに帰れる
-      : `${REACT_REDIRECT}?${query}`;//セキュリティ的によくないので、クエリ文字列は使わないほうがいい
+     : `${WEB_TEST}?${query}`  //セキュリティ的によくないので、クエリ文字列は使わないほうがいい
 
     // フロントにリダイレクト
     res.redirect(redirectTo);
