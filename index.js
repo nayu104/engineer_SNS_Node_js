@@ -16,12 +16,13 @@ const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const DB_URL = process.env.DB_URL;
 const WEB_TEST = process.env.REACT_REDIRECT;//http://localhost:3000/callbackというようにフロントのポートを指定する
 const FLUTTER_REDIRECT = process.env.FLUTTER_REDIRECT;
+const backendBaseUrl =process.env.BACKEND_BASE_URL; // GoogleCloud＿URL
 
 // PostgreSQL接続プールを作成
 const pool = new Pool({ connectionString: DB_URL });
 
 app.get('/', (req, res) => {
- res.send('Node起動した');
+ res.send('Node起動');
 });
 
 app.get('/login/github', (req, res) => {
@@ -29,7 +30,7 @@ app.get('/login/github', (req, res) => {
 
   const redirectUrl = `https://github.com/login/oauth/authorize` +
     `?client_id=${CLIENT_ID}` +
-    `&redirect_uri=https://engineer-sns-436152672971.europe-west1.run.app/callback/github?platform=${platform}` +
+    `&redirect_uri=backendBaseUrl/callback/github?platform=${platform}` +
     `&scope=read:user,user:follow`;
 
   res.redirect(redirectUrl);
