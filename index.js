@@ -21,7 +21,22 @@ const FLUTTER_REDIRECT = process.env.FLUTTER_REDIRECT;
 const pool = new Pool({ connectionString: DB_URL });
 
 app.get('/', (req, res) => {
- res.send('Node起動');
+ res.send('Node起動した!!!!!!!!!!!!!!!!!!!!!');
+});
+
+
+app.post('post',async(req, res) => {
+  const {user_id, message, parent_id, media_url} = req.body;
+  if(!message || !user_id) {
+    return res.status(400).json({ error: 'メッセージとユーザーIDは必須です' });
+  }
+  const result = await pool.query(
+     `INSERT INTO posts (user_id, message, parent_id, media_url)
+     VALUES ($1, $2, $3, $4)
+      RETURNING * `,
+    [user_id, message, parent_id || null, media_url || null]
+  )
+  res.status(201).json(result.rows[0]); // 作成したポストを返す
 });
 
 app.get('/login/github', (req, res) => {
