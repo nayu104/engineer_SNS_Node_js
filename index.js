@@ -43,7 +43,7 @@ app.get('/posts', async (req,res) => {
   const result = await pool.query(
     'SELCT * FROM posts ORDER BY created_at DESC'//最新のポストから取得
   )
-   res.json(result.rows); 
+   res.status(200).json(result.rows); 
 })
 
 
