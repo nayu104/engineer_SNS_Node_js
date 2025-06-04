@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.post('post',async(req, res) => {
+app.post('/get_post',async(req, res) => {
   const {user_id, message, parent_id, media_url} = req.body;
   if(!message || !user_id) {
     return res.status(400).json({ error: 'メッセージとユーザーIDは必須です' });
@@ -38,6 +38,14 @@ app.post('post',async(req, res) => {
   )
   res.status(201).json(result.rows[0]); // 作成したポストを返す
 });
+
+app.get('/posts', async (req,res) => {
+  const result = await pool.query(
+    'SELCT * FROM posts ORDER BY created_at DESC'//最新のポストから取得
+  )
+   res.json(result.rows); 
+})
+
 
 app.get('/login/github', (req, res) => {
   const { platform } = req.query;
