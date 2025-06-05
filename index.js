@@ -31,8 +31,8 @@ app.post('/get_post',async(req, res) => {
     return res.status(400).json({ error: 'メッセージとユーザーIDは必須です' });
   }
   const result = await pool.query(
-     `INSERT INTO posts (user_id, message, parent_id, media_url)
-     VALUES ($1, $2, $3, $4)
+     `INSERT INTO posts (user_id, message, parent_id, media_url,avatar_url)
+     VALUES ($1, $2, $3, $4, $5)
       RETURNING * `,
     [user_id, message, parent_id || null, media_url || null,avatar_url]
   )
