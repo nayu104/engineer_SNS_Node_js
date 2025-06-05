@@ -24,9 +24,9 @@ app.get('/', (req, res) => {
  res.send('Node起動した!!!!!!!!!!!!!!!!!!!!!');
 });
 
-
+//DBに入れて即返す
 app.post('/get_post',async(req, res) => {
-  const {user_id, message, parent_id, media_url} = req.body;
+  const {user_id, message, parent_id, media_url, avatar_url} = req.body;
   if(!message || !user_id) {
     return res.status(400).json({ error: 'メッセージとユーザーIDは必須です' });
   }
@@ -34,14 +34,15 @@ app.post('/get_post',async(req, res) => {
      `INSERT INTO posts (user_id, message, parent_id, media_url)
      VALUES ($1, $2, $3, $4)
       RETURNING * `,
-    [user_id, message, parent_id || null, media_url || null]
+    [user_id, message, parent_id || null, media_url || null,avatar_url]
   )
   res.status(201).json(result.rows[0]); // 作成したポストを返す
 });
 
+//DBからポストを返す
 app.get('/posts', async (req,res) => {
   const result = await pool.query(
-    'SELCT * FROM posts ORDER BY created_at DESC'//最新のポストから取得
+    'SELECT * FROM posts ORDER BY created_at DESC'//最新のポストから取得
   )
    res.status(200).json(result.rows); 
 })
