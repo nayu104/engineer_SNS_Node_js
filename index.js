@@ -32,7 +32,7 @@ app.post('/get_post',async(req, res) => {
   }
   const result = await pool.query(
      `INSERT INTO posts (user_id, message, recruitment, parent_id, media_url,avatar_url)
-     VALUES ($1, $2, $3, $4, $5)
+     VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING * `,
     [user_id, message, recruitment, parent_id || null, media_url || null,avatar_url]
   )
