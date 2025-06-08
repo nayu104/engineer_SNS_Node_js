@@ -26,15 +26,15 @@ app.get('/', (req, res) => {
 
 //DBに入れて即返す
 app.post('/get_post',async(req, res) => {
-  const {user_id, message, parent_id, media_url, avatar_url} = req.body;
+  const {user_id, message, recruitment, parent_id, media_url, avatar_url} = req.body;
   if(!message || !user_id) {
     return res.status(400).json({ error: 'メッセージとユーザーIDは必須です' });
   }
   const result = await pool.query(
-     `INSERT INTO posts (user_id, message, parent_id, media_url,avatar_url)
+     `INSERT INTO posts (user_id, message, recruitment, parent_id, media_url,avatar_url)
      VALUES ($1, $2, $3, $4, $5)
       RETURNING * `,
-    [user_id, message, parent_id || null, media_url || null,avatar_url]
+    [user_id, message, recruitment, parent_id || null, media_url || null,avatar_url]
   )
   res.status(201).json(result.rows[0]); // 作成したポストを返す
 });
