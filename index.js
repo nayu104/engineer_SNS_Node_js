@@ -24,24 +24,6 @@ app.get('/', (req, res) => {
  res.send('Node起動した!!!!!!!!!!!!!!!!!!!!!');
 });
 
-
-// DBに入れて即返す
-app.post('/get_group/list',async(req, res) => {
-  const {group_id, group_name, group_explanation, group_participants, created_at, owner_id, media_url} = req.body;
-  if(!group_name) {
-    return res.status(400).json({ error: 'グループ名は必須です' });
-  }
-  const result = await pool.query(
-     `INSERT INTO group_list (group_id, group_name, group_explanation, group_participants, created_at, owner_id, media_url)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
-     ON CONFLICT (group_id) DO UPDATE
-      RETURNING * `,
-      //ON CONFLICT (group_id) DO UPDATEは説明変更とかの更新処理に使う
-    [group_id, group_name, group_explanation || null, group_participants, created_at, owner_id, media_url || null]
-  )
-  res.status(201).json(result.rows[0]); // 作成したポストを返す
-});
-
 //DBに入れて即返す
 app.post('/get_post',async(req, res) => {
   const {user_id, message, recruitment, parent_id, media_url, avatar_url} = req.body;
