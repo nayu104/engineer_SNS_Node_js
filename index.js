@@ -155,7 +155,7 @@ app.get('/callback/github', async (req, res) => {
     await client.query(`
       INSERT INTO users (user_id, user_name, avatar_url)
       VALUES ($1, $2, $3)
-      ON CONFLICT (github_id) DO UPDATE
+      ON CONFLICT (user_id) DO UPDATE
       SET user_name = EXCLUDED.user_name,
           avatar_url = EXCLUDED.avatar_url
     `, [user.id, user.login, user.avatar_url]);
@@ -189,3 +189,4 @@ app.listen(PORT,'0.0.0.0', () => {
   console.log(`サーバーが起動しました → ${PORT}`);
   console.log(`サーバーが起動しませんでした → ${PORT}`);
 });
+
